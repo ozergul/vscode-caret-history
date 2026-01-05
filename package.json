@@ -2,13 +2,14 @@
   "name": "caret-history",
   "displayName": "Caret History",
   "description": "WebStorm-style caret position history navigation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Ozer Gul",
   "publisher": "ozergul",
   "repository": {
     "type": "git",
     "url": "https://github.com/ozergul/vscode-caret-history"
   },
+  "icon": "images/logo.jpg",
   "engines": {
     "vscode": "^1.107.0"
   },
