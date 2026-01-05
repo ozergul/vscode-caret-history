@@ -1,0 +1,64 @@
+{
+  "name": "caret-history",
+  "displayName": "Caret History",
+  "description": "WebStorm-style caret position history navigation",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.107.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "caretHistory.back",
+        "title": "Caret History: Go Back"
+      },
+      {
+        "command": "caretHistory.forward",
+        "title": "Caret History: Go Forward"
+      },
+      {
+        "command": "caretHistory.clear",
+        "title": "Caret History: Clear"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "caretHistory.back",
+        "key": "ctrl+alt+left",
+        "mac": "cmd+alt+left",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "caretHistory.forward",
+        "key": "ctrl+alt+right",
+        "mac": "cmd+alt+right",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.107.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.48.1",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
