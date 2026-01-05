@@ -16,6 +16,27 @@ WebStorm-style caret position history navigation for VS Code.
 | Go Back | `Ctrl+Alt+Left` | `Cmd+Alt+Left` |
 | Go Forward | `Ctrl+Alt+Right` | `Cmd+Alt+Right` |
 
+### Manual Keybinding Setup
+
+If the default keybindings don't work (due to conflicts with other extensions), add these to your `keybindings.json` (`Cmd+Shift+P` → "Preferences: Open Keyboard Shortcuts (JSON)"):
+
+```json
+[
+  {
+    "key": "cmd+alt+left",
+    "command": "caretHistory.back",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+alt+right",
+    "command": "caretHistory.forward",
+    "when": "editorTextFocus"
+  }
+]
+```
+
+For Windows/Linux, replace `cmd` with `ctrl`.
+
 ## Commands
 
 - `Caret History: Go Back` - Navigate to previous caret position
