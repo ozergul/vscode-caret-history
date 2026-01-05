@@ -3,6 +3,10 @@
   "displayName": "Caret History",
   "description": "WebStorm-style caret position history navigation",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozergul/vscode-caret-history"
+  },
   "engines": {
     "vscode": "^1.107.0"
   },
