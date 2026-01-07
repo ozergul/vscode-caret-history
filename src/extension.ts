@@ -11,11 +11,30 @@ let forwardStack: CaretPosition[] = [];
 let lastPosition: CaretPosition | null = null;
 let isNavigating = false;
 
-// Minimum line distance - filter out small movements
-const MIN_LINE_DISTANCE = 5;
+const MAX_HISTORY_SIZE = 100;
+const STORAGE_KEY_BACK = 'caretHistory.backStack';
+const STORAGE_KEY_FORWARD = 'caretHistory.forwardStack';
+const STORAGE_KEY_LAST = 'caretHistory.lastPosition';
+
+let extensionContext: vscode.ExtensionContext;
+
+function saveHistory() {
+	extensionContext.workspaceState.update(STORAGE_KEY_BACK, backStack.slice(-MAX_HISTORY_SIZE));
+	extensionContext.workspaceState.update(STORAGE_KEY_FORWARD, forwardStack.slice(-MAX_HISTORY_SIZE));
+	extensionContext.workspaceState.update(STORAGE_KEY_LAST, lastPosition);
+}
+
+function loadHistory() {
+	backStack = extensionContext.workspaceState.get<CaretPosition[]>(STORAGE_KEY_BACK) || [];
+	forwardStack = extensionContext.workspaceState.get<CaretPosition[]>(STORAGE_KEY_FORWARD) || [];
+	lastPosition = extensionContext.workspaceState.get<CaretPosition | null>(STORAGE_KEY_LAST) || null;
+}
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Caret History extension activated');
+
+	extensionContext = context;
+	loadHistory();
 
 	// Cursor movement listener
 	const selectionListener = vscode.window.onDidChangeTextEditorSelection((e: vscode.TextEditorSelectionChangeEvent) => {
@@ -42,23 +61,13 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		// Filter small movements (less than MIN_LINE_DISTANCE in the same file)
-		if (
-			lastPosition &&
-			lastPosition.uri === current.uri &&
-			Math.abs(lastPosition.line - current.line) < MIN_LINE_DISTANCE
-		) {
-			// Only update lastPosition, don't add to stack
-			lastPosition = current;
-			return;
-		}
-
 		if (lastPosition) {
 			backStack.push(lastPosition);
 			forwardStack = []; // New movement clears forward stack
 		}
 
 		lastPosition = current;
+		saveHistory();
 	});
 
 	// Go Back command - hybrid: caret first, then VS Code
@@ -104,6 +113,7 @@ export function activate(context: vscode.ExtensionContext) {
 				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenter);
 
 				lastPosition = target;
+				saveHistory();
 			} finally {
 				isNavigating = false;
 			}

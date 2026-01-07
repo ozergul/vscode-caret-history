@@ -2,7 +2,7 @@
   "name": "caret-history",
   "displayName": "Caret History",
   "description": "WebStorm-style caret position history navigation",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "author": "Ozer Gul",
   "publisher": "ozergul",
   "repository": {

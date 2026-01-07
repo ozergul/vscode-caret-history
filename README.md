@@ -6,7 +6,6 @@ WebStorm-style caret position history navigation for VS Code.
 
 - **True caret history**: Tracks actual cursor position changes, not just file navigation
 - **Hybrid navigation**: Uses caret history first, falls back to VS Code's native navigation when empty
-- **Smart filtering**: Ignores small movements (< 5 lines) to avoid cluttering history
 - **Works everywhere**: Mouse clicks, keyboard navigation, Go to Definition - all tracked equally
 
 ## Keyboard Shortcuts
