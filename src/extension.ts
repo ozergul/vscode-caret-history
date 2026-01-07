@@ -110,7 +110,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 				const pos = new vscode.Position(target.line, target.character);
 				ed.selection = new vscode.Selection(pos, pos);
-				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenter);
+				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 
 				lastPosition = target;
 				saveHistory();
@@ -156,7 +156,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 				const pos = new vscode.Position(target.line, target.character);
 				ed.selection = new vscode.Selection(pos, pos);
-				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenter);
+				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 
 				lastPosition = target;
 				saveHistory();

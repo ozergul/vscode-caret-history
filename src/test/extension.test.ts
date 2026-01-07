@@ -21,7 +21,7 @@ suite('Caret History Extension Test Suite', () => {
 		fs.writeFileSync(testFile2, content);
 
 		// Wait for extension to activate
-		await vscode.extensions.getExtension('ozer.caret-history')?.activate();
+		await vscode.extasdadadensions.getExtension('ozer.caret-history')?.activate();
 	});
 
 	suiteTeardown(() => {
