@@ -79,12 +79,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 			isNavigating = true;
 
-			if (lastPosition) {
-				forwardStack.push(lastPosition);
-			}
-
 			try {
 				const uri = vscode.Uri.parse(target.uri);
+
+				// Check if file exists before trying to open
+				try {
+					await vscode.workspace.fs.stat(uri);
+				} catch {
+					// File doesn't exist, skip to next entry
+					isNavigating = false;
+					await vscode.commands.executeCommand('caretHistory.back');
+					return;
+				}
+
+				if (lastPosition) {
+					forwardStack.push(lastPosition);
+				}
+
 				const doc = await vscode.workspace.openTextDocument(uri);
 				const ed = await vscode.window.showTextDocument(doc);
 
@@ -113,12 +124,23 @@ export function activate(context: vscode.ExtensionContext) {
 
 			isNavigating = true;
 
-			if (lastPosition) {
-				backStack.push(lastPosition);
-			}
-
 			try {
 				const uri = vscode.Uri.parse(target.uri);
+
+				// Check if file exists before trying to open
+				try {
+					await vscode.workspace.fs.stat(uri);
+				} catch {
+					// File doesn't exist, skip to next entry
+					isNavigating = false;
+					await vscode.commands.executeCommand('caretHistory.forward');
+					return;
+				}
+
+				if (lastPosition) {
+					backStack.push(lastPosition);
+				}
+
 				const doc = await vscode.workspace.openTextDocument(uri);
 				const ed = await vscode.window.showTextDocument(doc);
 
