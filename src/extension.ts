@@ -159,6 +159,7 @@ export function activate(context: vscode.ExtensionContext) {
 				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenter);
 
 				lastPosition = target;
+				saveHistory();
 			} finally {
 				isNavigating = false;
 			}
@@ -172,6 +173,7 @@ export function activate(context: vscode.ExtensionContext) {
 			backStack = [];
 			forwardStack = [];
 			lastPosition = null;
+			saveHistory();
 			vscode.window.showInformationMessage('Caret history cleared');
 		}
 	);
