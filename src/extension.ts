@@ -196,7 +196,26 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	);
 
-	context.subscriptions.push(selectionListener, goBack, goForward, clearHistory);
+	// File deletion watcher - clean up history when files are deleted
+	const fileWatcher = vscode.workspace.createFileSystemWatcher('**/*');
+	const onFileDeleted = fileWatcher.onDidDelete((uri: vscode.Uri) => {
+		const deletedUri = uri.toString();
+
+		// Remove from backStack
+		backStack = backStack.filter(pos => pos.uri !== deletedUri);
+
+		// Remove from forwardStack
+		forwardStack = forwardStack.filter(pos => pos.uri !== deletedUri);
+
+		// Clear lastPosition if it was in the deleted file
+		if (lastPosition && lastPosition.uri === deletedUri) {
+			lastPosition = backStack.pop() || null;
+		}
+
+		saveHistory();
+	});
+
+	context.subscriptions.push(selectionListener, goBack, goForward, clearHistory, fileWatcher, onFileDeleted);
 }
 
 export function deactivate() {
