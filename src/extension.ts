@@ -126,11 +126,16 @@ export function activate(context: vscode.ExtensionContext) {
 				const doc = await vscode.workspace.openTextDocument(uri);
 				const ed = await vscode.window.showTextDocument(doc);
 
-				const pos = new vscode.Position(target.line, target.character);
+				// Clamp line number to valid range
+				const maxLine = doc.lineCount - 1;
+				const safeLine = Math.min(target.line, maxLine);
+				const safeChar = safeLine === target.line ? target.character : 0;
+
+				const pos = new vscode.Position(safeLine, safeChar);
 				ed.selection = new vscode.Selection(pos, pos);
 				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 
-				lastPosition = target;
+				lastPosition = { ...target, line: safeLine, character: safeChar };
 				saveHistory();
 			} finally {
 				isNavigating = false;
@@ -172,11 +177,16 @@ export function activate(context: vscode.ExtensionContext) {
 				const doc = await vscode.workspace.openTextDocument(uri);
 				const ed = await vscode.window.showTextDocument(doc);
 
-				const pos = new vscode.Position(target.line, target.character);
+				// Clamp line number to valid range
+				const maxLine = doc.lineCount - 1;
+				const safeLine = Math.min(target.line, maxLine);
+				const safeChar = safeLine === target.line ? target.character : 0;
+
+				const pos = new vscode.Position(safeLine, safeChar);
 				ed.selection = new vscode.Selection(pos, pos);
 				ed.revealRange(new vscode.Range(pos, pos), vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 
-				lastPosition = target;
+				lastPosition = { ...target, line: safeLine, character: safeChar };
 				saveHistory();
 			} finally {
 				isNavigating = false;
