@@ -58,12 +58,10 @@ VS Code's built-in navigation (`workbench.action.navigateBack`) only tracks:
 
 It doesn't track regular cursor movements within a file. This extension fills that gap, giving you WebStorm-like navigation.
 
-## Release Notes
+## Local
 
-### 0.0.1
+# Comile
+npm run compile
 
-Initial release with core functionality:
-- Caret position tracking
-- Back/Forward navigation
-- Hybrid fallback to VS Code navigation
-- Small movement filtering
+# Publish
+vsce package
