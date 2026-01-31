@@ -43,7 +43,14 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		const editor = e.textEditor;
-		const pos = editor.selection.active;
+		const selection = editor.selection;
+
+		// Skip if text is being selected (not just cursor movement)
+		if (!selection.isEmpty) {
+			return;
+		}
+
+		const pos = selection.active;
 
 		const current: CaretPosition = {
 			uri: editor.document.uri.toString(),
@@ -51,13 +58,24 @@ export function activate(context: vscode.ExtensionContext) {
 			character: pos.character
 		};
 
-		// Are we at the same position?
+		// Skip if same position
 		if (
 			lastPosition &&
 			lastPosition.uri === current.uri &&
 			lastPosition.line === current.line &&
 			lastPosition.character === current.character
 		) {
+			return;
+		}
+
+		// Skip if same file and same line (only character changed)
+		if (
+			lastPosition &&
+			lastPosition.uri === current.uri &&
+			lastPosition.line === current.line
+		) {
+			// Update lastPosition but don't add to history
+			lastPosition = current;
 			return;
 		}
 
