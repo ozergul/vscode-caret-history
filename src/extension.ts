@@ -225,7 +225,36 @@ export function activate(context: vscode.ExtensionContext) {
 		saveHistory();
 	});
 
-	context.subscriptions.push(selectionListener, goBack, goForward, clearHistory, fileWatcher, onFileDeleted);
+	// File rename watcher - update URIs when files are renamed
+	const onFileRenamed = vscode.workspace.onDidRenameFiles((e: vscode.FileRenameEvent) => {
+		for (const { oldUri, newUri } of e.files) {
+			const oldUriStr = oldUri.toString();
+			const newUriStr = newUri.toString();
+
+			// Update backStack
+			for (const pos of backStack) {
+				if (pos.uri === oldUriStr) {
+					pos.uri = newUriStr;
+				}
+			}
+
+			// Update forwardStack
+			for (const pos of forwardStack) {
+				if (pos.uri === oldUriStr) {
+					pos.uri = newUriStr;
+				}
+			}
+
+			// Update lastPosition
+			if (lastPosition && lastPosition.uri === oldUriStr) {
+				lastPosition.uri = newUriStr;
+			}
+		}
+
+		saveHistory();
+	});
+
+	context.subscriptions.push(selectionListener, goBack, goForward, clearHistory, fileWatcher, onFileDeleted, onFileRenamed);
 }
 
 export function deactivate() {
